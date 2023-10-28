@@ -39,5 +39,7 @@
 }
 
 :root {
-  --base-color: #474d5f;
+  --color-base: #474d5f;
+  --color-dark-font: #000000;
+  --color-light-font: #ffffff;
 }
