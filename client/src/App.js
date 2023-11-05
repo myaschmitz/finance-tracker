@@ -7,6 +7,7 @@ import Planner from './containers/Planner';
 import Stats from './containers/Stats';
 import Footer from './containers/Footer';
 import Account from './containers/Account';
+import Settings from './containers/Settings';
 
 import React, { Suspense, useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -29,6 +30,7 @@ function App() {
           <Route exact path="/Planner" element={<Planner/>} />
           <Route exact path="/Stats" element={<Stats/>} />
           <Route exact path="/Account" element={<Account />} />
+          <Route exact path="/Settings" element={<Settings />} />
         </Routes>
         <h1 style={{ textDecoration: "underline" }}>{message}</h1>
       </div>
