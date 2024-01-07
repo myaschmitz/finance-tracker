@@ -1,9 +1,33 @@
 const { Pool } = require('pg');
 
+require('dotenv').config();
+
 const pool = new Pool({
-    user: 'your_database_user',
-    host: 'localhost',
-    database: 'your_database_name',
-    password: 'your_password',
-    port: 5432, // Default PostgreSQL port
-  });
+    host: process.env.PG_HOST,
+    port: process.env.PG_PORT,
+    user: process.env.PG_USER,
+    password: process.env.PG_PASSWORD,
+    database: process.env.PG_DATABASE,
+    ssl: false,
+});
+
+module.exports = {
+    query: (text, params, callback) => {
+        return pool.query(text, params, callback);
+    },
+};
+
+// (async () => {
+//     const pool = new Pool({
+//         host: process.env.PG_HOST,
+//         port: process.env.PG_PORT,
+//         user: process.env.PG_USER,
+//         password: process.env.PG_PASSWORD,
+//         database: process.env.PG_DATABASE,
+//         ssl: true,
+//     });
+//     await pool.connect();
+//     const res = await pool.query('SELECT $1::text as connected', ['Connection to postgres successful!']);
+//     console.log(res.rows[0].connected);
+//     await pool.end();
+// })();
