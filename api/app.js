@@ -3,11 +3,11 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var indexRouter = require('./routes/index.js');
-var usersRouter = require('./routes/users');
-var testAPIRouter = require('./routes/testAPI');
+var cors = require("cors");
+// const userRoutes = require('./routes/userRoutes');
 
 var app = express();
+app.use(cors());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -19,9 +19,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
-app.use('/testAPI', testAPIRouter);
+app.use('/', require('./routes/index'));
+app.use('/user', require('./routes/userRoutes'));
+app.use('/transactions', require('./routes/transactionRoutes'));
+
+var port = 9000;
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -39,8 +41,8 @@ app.use(function (err, req, res, next) {
   res.render('error');
 });
 
-// app.listen(port, () => {
-//   console.log(`Server is running on http://localhost:${port}`);
-// });
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
+});
 
 module.exports = app;

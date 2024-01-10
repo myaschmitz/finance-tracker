@@ -1,11 +1,63 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
+  migrationDirectory = "./migrations"
 }
 
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+}
+
+model account {
+  id          Int           @id @default(autoincrement())
+  name        String?       @db.VarChar(50)
+  balance     Decimal?      @db.Decimal(12, 2)
+  transaction transaction[]
+}
+
+model category {
+  id                 Int           @id @default(autoincrement())
+  name               String?       @db.VarChar(50)
+  group_id           Int?
+  parent_category_id Int?
+  amount             Decimal?      @db.Decimal(12, 2)
+  group              group?        @relation(fields: [group_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  category           category?     @relation("categoryTocategory", fields: [parent_category_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  other_category     category[]    @relation("categoryTocategory")
+  transaction        transaction[]
+}
+
+model group {
+  id       Int        @id(map: "Group_pkey") @default(autoincrement())
+  name     String?    @db.VarChar(50)
+  category category[]
+}
+
+model income_source {
+  id              Int          @id @default(autoincrement())
+  amount          Decimal?     @db.Decimal(12, 2)
+  user_account_id Int
+  user_account    user_account @relation(fields: [user_account_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model transaction {
+  id              Int          @id @default(autoincrement())
+  user_account_id Int
+  merchant        String?      @db.VarChar(50)
+  account_id      Int?
+  amount          Decimal?     @db.Decimal(12, 2)
+  category_id     Int?
+  date            DateTime?    @db.Date
+  type            String?      @db.VarChar(16)
+  account         account?     @relation(fields: [account_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  category        category?    @relation(fields: [category_id], references: [id], onUpdate: NoAction)
+  user_account    user_account @relation(fields: [user_account_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model user_account {
+  id            Int             @id @default(autoincrement())
+  email         String          @db.VarChar(255)
+  password      String?         @db.VarChar(80)
+  income_source income_source[]
+  transaction   transaction[]
 }

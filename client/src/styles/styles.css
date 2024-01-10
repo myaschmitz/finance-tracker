@@ -23,6 +23,7 @@
 .header h1 {
     margin-top: 0;
 }
+
 /* #endregion Header */
 
 /* #region General */
@@ -33,4 +34,28 @@
     text-decoration: none;
     color: var(--color-dark-font);
 }
+
+.container {
+    /* width: 30%; */
+    margin: 20px auto;
+    /* padding: 20px 0 0 0; */
+    /* padding-left: 240px; */
+}
+
+.section-title {
+    padding: 0 0 10px 0;
+}
+
 /* #endregion General */
+
+/* #region Account */
+.account-layout {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.delete-account :hover {
+    color: var(--color-dark-font);
+}
+/* #endregion Account */

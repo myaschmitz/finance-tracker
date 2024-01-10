@@ -1,61 +1,156 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { React, useState } from 'react';
+import { Link, Route, Routes, useNavigate } from 'react-router-dom';
 import { RiAccountCircleFill } from 'react-icons/ri';
 import { IoNotifications } from 'react-icons/io5';
+import Main from './Main.js';
+import Transactions from './Transactions.js';
+import Stats from './Stats.js';
+import Account from './Account.js';
+import Settings from './Settings.js';
+
+import {
+    Drawer, AppBar, Box, CssBaseline, Divider, List, ListItem,
+    ListItemButton, ListItemText, Toolbar, IconButton,
+} from '@mui/material';
+
+import MenuIcon from '@mui/icons-material/Menu';
+
+import headerImage from '../images/logo-color.png';
 
 export default function Header() {
-    return (
-        // <div className="header">
-        //     <Link to="/" className='link-theme' style={{ marginLeft: "8px" }} >Home</Link>
-        //     <p><Link to="/Planner" className='link-theme'>Planner</Link></p>
-        //     <p><Link to="/Stats" className='link-theme'>Stats</Link></p>
+    const drawerWidth = 240;
+    const navigate = useNavigate();
 
-        //     {/* TODO check if user is logged in, if not logged in, then change header and give Log In button */}
-        //     <Link to="/Account" className='link-theme' style={{ marginRight: "8px" }}><RiAccountCircleFill style={{ fontSize: "1.5em" }} ></RiAccountCircleFill></Link>
-        // </div>
-        <div class="navbar bg-base-200">
-            <div class="navbar-start">
-                <div class="dropdown">
-                    <label tabindex="0" class="btn btn-ghost lg:hidden">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h8m-8 6h16" /></svg>
-                    </label>
-                    <ul tabindex="0" class="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
-                        <li><Link to="/">Dashboard</Link></li>
-                        <li><Link to="/Planner">Planner</Link></li>
-                        <li><Link to="/Stats">Stats</Link></li>
-                    </ul>
-                </div>
-                <Link to="/" class="normal-case text-xl"><image src="../images/logo-color.png"></image></Link>
-            </div>
-            <div class="navbar-center hidden lg:flex">
-                <ul class="menu menu-horizontal px-1">
-                    <li><Link to="/">Dashboard</Link></li>
-                    <li><Link to="/Planner">Planner</Link></li>
-                    <li><Link to="/Stats">Stats</Link></li>
-                </ul>
-            </div>
-            <div class="navbar-end">
-                {/* Alert button */}
-                <button class="btn btn-ghost btn-circle">
-                    <div class="indicator">
-                        <IoNotifications style={{width: "100%", height: "100%"}} />
-                        <span class="indicator-item"></span>
+    // State to track the selected component
+    const [selectedComponent, setSelectedComponent] = useState(null);
+
+    const handleButtonClick = (path) => {
+        // Check if the selected component is already the one being clicked
+        navigate(path);
+        if (selectedComponent !== path) {
+            setSelectedComponent(path);
+        }
+    };
+
+    const [mobileOpen, setMobileOpen] = useState(false);
+
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
+
+    const drawer = (
+        <div>
+            <Toolbar>
+                <h1>Tracker</h1>
+                {/* <Link to="/" className="normal-case text-xl"><img style={{ height: "30px" }} src={headerImage}></img></Link> */}
+            </Toolbar>
+            <Divider />
+            <List>
+                <ListItem key="Dashboard" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/')}>
+                        <ListItemText primary="Dashboard" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key="Transactions" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/Transactions')}>
+                        <ListItemText primary="Transactions" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key="Stats" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/Stats')}>
+                        <ListItemText primary="Stats" />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+            <Divider />
+            <List>
+                <ListItem key="Account" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/Account')}>
+                        <ListItemText primary="Account" />
+                    </ListItemButton>
+                </ListItem>
+                <ListItem key="Settings" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/Settings')}>
+                        <ListItemText primary="Settings" />
+                    </ListItemButton>
+                </ListItem>
+            </List>
+        </div>
+    );
+
+    return (
+        <div>
+            <Box sx={{ display: 'flex' }}>
+                {/* <CssBaseline /> */}
+                <AppBar
+                    position="fixed"
+                    sx={{
+                        width: { sm: `calc(100% - ${drawerWidth}px)` },
+                        ml: { sm: `${drawerWidth}px` },
+                    }}
+                >
+                    <IconButton
+                        color="inherit"
+                        aria-label="open drawer"
+                        edge="start"
+                        onClick={handleDrawerToggle}
+                        sx={{ mr: 2, display: { sm: 'none' } }}
+                    >
+                        <MenuIcon />
+                    </IconButton>
+                </AppBar>
+                <Box
+                    component="nav"
+                    sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+                    aria-label="mailbox folders"
+                >
+                    <Drawer
+                        variant="temporary"
+                        open={mobileOpen}
+                        onClose={handleDrawerToggle}
+                        ModalProps={{ keepMounted: true }}
+                        PaperProps={{
+                            sx: {
+                                bgcolor: "primary.main"
+                            }
+                        }}
+                        sx={{
+                            display: { xs: 'block', sm: 'none' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                    >
+                        {drawer}
+                    </Drawer>
+                    <Drawer
+                        variant="permanent"
+                        PaperProps={{
+                            sx: {
+                                bgcolor: "primary.main"
+                            }
+                        }}
+                        sx={{
+                            display: { xs: 'none', sm: 'block' },
+                            '& .MuiDrawer-paper': { boxSizing: 'border-box', width: drawerWidth },
+                        }}
+                        open
+                    >
+                        {drawer}
+                    </Drawer>
+                </Box>
+                <Box component="main" sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}>
+                    <Toolbar />
+                    <div>
+                        {/* Use Routes to render only the first matching route */}
+                        <Routes>
+                            <Route exact path="/" element={<Main />} />
+                            <Route exact path="/Transactions" element={<Transactions />} />
+                            <Route exact path="/Stats" element={<Stats />} />
+                            <Route exact path="/Account" element={<Account />} />
+                            <Route exact path="/Settings" element={<Settings />} />
+                        </Routes>
                     </div>
-                </button>
-                {/* Profile button */}
-                <div class="dropdown dropdown-end">
-                    <label tabindex="0" class="btn btn-ghost btn-circle avatar">
-                        <div class="w-8 rounded-full">
-                            <RiAccountCircleFill style={{width: "100%", height: "100%"}} />
-                        </div>
-                    </label>
-                    <ul tabindex="0" class="mt-3 z-[1] p-2 shadow menu menu-sm dropdown-content bg-base-100 rounded-box w-52">
-                        <li><Link to="/Account">Profile</Link></li>
-                        <li><Link to="/Settings">Settings</Link></li>
-                        <li><Link to="">Logout</Link></li>
-                    </ul>
-                </div>
-            </div>
+                </Box>
+            </Box>
         </div>
     )
 }
