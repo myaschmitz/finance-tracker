@@ -7,25 +7,30 @@ import Transactions from './Transactions.js';
 import Stats from './Stats.js';
 import Account from './Account.js';
 import Settings from './Settings.js';
+import '../styles/styles.css';
 
 import {
     Drawer, AppBar, Box, CssBaseline, Divider, List, ListItem,
-    ListItemButton, ListItemText, Toolbar, IconButton,
+    ListItemButton, ListItemText, Toolbar, IconButton, Collapse
 } from '@mui/material';
 
+import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import headerImage from '../images/logo-color.png';
 
-export default function Header() {
-    const drawerWidth = 240;
+export default function HeaderDrawer() {
+    const drawerWidth = 200;
     const navigate = useNavigate();
 
-    // State to track the selected component
+    // state to track the selected component
     const [selectedComponent, setSelectedComponent] = useState(null);
 
+    // state to track organization menu folder
+    const [openCollapse, setOpenCollapse] = useState(false);
+
     const handleButtonClick = (path) => {
-        // Check if the selected component is already the one being clicked
+        // check if the selected component is already the one being clicked
         navigate(path);
         if (selectedComponent !== path) {
             setSelectedComponent(path);
@@ -37,6 +42,10 @@ export default function Header() {
     const handleDrawerToggle = () => {
         setMobileOpen(!mobileOpen);
     };
+
+    function handleDrawerSubmenuOpenSettings() {
+        setOpenCollapse(!openCollapse);
+    }
 
     const drawer = (
         <div>
@@ -56,17 +65,40 @@ export default function Header() {
                         <ListItemText primary="Transactions" />
                     </ListItemButton>
                 </ListItem>
+                <ListItemButton onClick={handleDrawerSubmenuOpenSettings}>
+                    <ListItemText primary="Organization" />
+                    {openCollapse ? <ExpandLess /> : <ExpandMore />}
+                </ListItemButton>
+                <Collapse in={openCollapse} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                        <ListItemButton onClick={() => handleButtonClick('/Groups')} sx={{ pl: 4 }}>
+                            <ListItemText primary="Groups" />
+                        </ListItemButton>
+                        <ListItemButton onClick={() => handleButtonClick('/Categories')} sx={{ pl: 4 }}>
+                            <ListItemText primary="Categories" />
+                        </ListItemButton>
+                    </List>
+                </Collapse>
                 <ListItem key="Stats" disablePadding>
                     <ListItemButton onClick={() => handleButtonClick('/Stats')}>
                         <ListItemText primary="Stats" />
                     </ListItemButton>
                 </ListItem>
+                <ListItem key="Recurring" disablePadding>
+                    <ListItemButton onClick={() => handleButtonClick('/Stats')}>
+                        <ListItemText primary="Recurring" />
+                    </ListItemButton>
+                </ListItem>
             </List>
-            <Divider />
-            <List>
+            <List sx={{
+                width: "100%",
+                position: "absolute",
+                bottom: "0",
+            }}>
+                <Divider />
                 <ListItem key="Account" disablePadding>
                     <ListItemButton onClick={() => handleButtonClick('/Account')}>
-                        <ListItemText primary="Account" />
+                        <RiAccountCircleFill style={{ padding: "0 5px 0 0" }} />Account
                     </ListItemButton>
                 </ListItem>
                 <ListItem key="Settings" disablePadding>
@@ -81,7 +113,6 @@ export default function Header() {
     return (
         <div>
             <Box sx={{ display: 'flex' }}>
-                {/* <CssBaseline /> */}
                 <AppBar
                     position="fixed"
                     sx={{
@@ -125,7 +156,8 @@ export default function Header() {
                         variant="permanent"
                         PaperProps={{
                             sx: {
-                                bgcolor: "primary.main"
+                                bgcolor: "darkBlue.main",
+                                color: "nextColor.main"
                             }
                         }}
                         sx={{

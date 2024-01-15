@@ -20,8 +20,11 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', require('./routes/index'));
-app.use('/user', require('./routes/userRoutes'));
+app.use('/users', require('./routes/userAccountRoutes'));
 app.use('/transactions', require('./routes/transactionRoutes'));
+app.use('/categories', require('./routes/categoryRoutes'));
+app.use('/groups', require('./routes/groupRoutes'));
+app.use('/accounts', require('./routes/accountRoutes'));
 
 var port = 9000;
 

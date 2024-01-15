@@ -7,14 +7,14 @@ module.exports = {
     './App.test.js',
     './src/**/*.{html,js,ts,jsx,tsx}'
   ],
-  theme: {
-    extend: {},
-  },
-  plugins: [require("daisyui")],
-  daisyui: {
-    themes: [
-      "light", "dark", "dracula"
-    ]
-  }
+  // theme: {
+  //   extend: {},
+  // },
+  // plugins: [require("daisyui")],
+  // daisyui: {
+  //   themes: [
+  //     "light", "dark", "dracula"
+  //   ]
+  // }
 }
 

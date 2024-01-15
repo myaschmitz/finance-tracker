@@ -59,3 +59,17 @@
     color: var(--color-dark-font);
 }
 /* #endregion Account */
+
+/* #region Transactions */
+.popover-container {
+    display: flex;
+    flex-direction: row;
+    gap: 15px;
+}
+
+.popover-form {
+    background-color: var(--color-background);
+    padding: 10px;
+    border: var(--color-primary) solid 2px;
+}
+/* #endregion Transactions */

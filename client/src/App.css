@@ -14,7 +14,7 @@
 }
 
 .App-header {
-  background-color: #282c34;
+  /* background-color: #282c34; */
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -40,6 +40,15 @@
 
 :root {
   --color-base: #474d5f;
+  --color-background: #DAD9D2;
+  --color-dark-background: #96958d;
   --color-dark-font: #000000;
   --color-light-font: #ffffff;
+  /* --color-primary: #b3d2ab; */
+  --color-primary: #172A3A;
+  --color-secondary: #86a8b3;
+  --color-tertiary: #856A5D;
+  --color-dark-blue: #172A3A;
+  --color-aqua-blue: #004346;
+  --color-back-color: #6D8EA0;
 }
